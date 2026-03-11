@@ -1,0 +1,4 @@
+{
+  "kpis": ["gmv", "take_rate", "active_users", "paid_jobs"],
+  "monthly_target_mzn": 3000000
+}

@@ -1,0 +1,7 @@
+{
+  "name": "mozjobs/backend",
+  "require": {},
+  "autoload": {
+    "psr-4": {"App\\": "app/"}
+  }
+}
