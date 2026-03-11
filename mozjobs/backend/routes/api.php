@@ -37,6 +37,13 @@ return [
 
 
 
+
+  'GET /api/stories' => ['handler' => ['App\Controllers\StoryController', 'index'], 'auth' => true],
+  'POST /api/stories' => ['handler' => ['App\Controllers\StoryController', 'store'], 'auth' => true],
+
+  'GET /api/follows' => ['handler' => ['App\Controllers\FollowController', 'index'], 'auth' => true],
+  'POST /api/follows' => ['handler' => ['App\Controllers\FollowController', 'store'], 'auth' => true],
+
   'GET /api/feed' => ['handler' => ['App\Controllers\FeedController', 'index'], 'auth' => true],
   'POST /api/feed/posts' => ['handler' => ['App\Controllers\FeedController', 'createPost'], 'auth' => true],
   'POST /api/feed/reactions' => ['handler' => ['App\Controllers\FeedController', 'react'], 'auth' => true],

@@ -27,6 +27,7 @@ Páginas com fluxo simples para uso imediato:
 - Perfil: edição de dados profissionais.
 - Hub: favoritos e notificações para gestão pessoal.
 - Feed estilo social (próximo ao Facebook): publicações, reações e comentários.
+- Stories e seguir perfis (social graph) para discovery de talento.
 - Favoritos e notificações: novas APIs e feed pessoal no Hub.
 - Reputação: resumo de avaliação média por profissional.
 - Relatórios: insights e export CSV para gestão.

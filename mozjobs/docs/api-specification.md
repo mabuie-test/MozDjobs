@@ -47,6 +47,12 @@ Base URL: `/api`
 - `POST /feed/reactions` (auth) `{post_id,user_id,type}`
 - `POST /feed/comments` (auth) `{post_id,user_id,comment}`
 
+## Stories & Social Graph
+- `GET /stories` (auth)
+- `POST /stories` (auth) `{user_id,user_name,text,bg?}`
+- `GET /follows?follower_id={id}` (auth)
+- `POST /follows` (auth) `{follower_id,followed_id}`
+
 ## Favorites
 - `GET /favorites?user_id={id}` (auth)
 - `POST /favorites` (auth) `{user_id,entity_type,entity_id}`

@@ -24,6 +24,7 @@ class FeedController {
       $postReactions = array_values(array_filter($reactions, fn($r) => (int)($r['post_id'] ?? 0) === $pid));
       $post['comments_count'] = count($postComments);
       $post['reactions_count'] = count($postReactions);
+      $post['top_reaction'] = $postReactions ? ($postReactions[0]['type'] ?? 'like') : 'none';
       $post['comments'] = array_slice($postComments, -3);
       return $post;
     }, $posts);
@@ -40,6 +41,7 @@ class FeedController {
       'author_name' => (string)$data['author_name'],
       'content' => trim((string)$data['content']),
       'media_url' => (string)($data['media_url'] ?? ''),
+      'post_type' => (string)($data['post_type'] ?? 'status'),
     ]);
 
     return ['resource' => 'FeedPost', 'saved' => $saved];
