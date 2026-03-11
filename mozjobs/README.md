@@ -25,6 +25,7 @@ Páginas com fluxo simples para uso imediato:
 - Chat: mensagens por pedido em tempo real por polling.
 - Admin: métricas, aprovação, banimento e resolução de disputas.
 - Perfil: edição de dados profissionais.
+- Hub: favoritos e notificações para gestão pessoal.
 - Reputação: resumo de avaliação média por profissional.
 
 ## Scripts

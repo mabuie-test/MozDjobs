@@ -35,6 +35,14 @@ return [
   'GET /api/chat' => ['handler' => ['App\\Controllers\\ChatController', 'index'], 'auth' => true],
   'POST /api/chat' => ['handler' => ['App\\Controllers\\ChatController', 'store'], 'auth' => true],
 
+
+  'GET /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'index'], 'auth' => true],
+  'POST /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'store'], 'auth' => true],
+
+  'GET /api/notifications' => ['handler' => ['App\Controllers\NotificationController', 'index'], 'auth' => true],
+  'POST /api/notifications' => ['handler' => ['App\Controllers\NotificationController', 'store'], 'auth' => true],
+  'POST /api/notifications/read' => ['handler' => ['App\Controllers\NotificationController', 'markRead'], 'auth' => true],
+
   'GET /api/admin/metrics' => ['handler' => ['App\\Controllers\\AdminController', 'metrics'], 'auth' => true, 'role' => ['admin']],
   'POST /api/admin/users/ban' => ['handler' => ['App\\Controllers\\AdminController', 'banUser'], 'auth' => true, 'role' => ['admin']],
   'POST /api/admin/jobs/approve' => ['handler' => ['App\\Controllers\\AdminController', 'approveJob'], 'auth' => true, 'role' => ['admin']],

@@ -24,3 +24,8 @@ A persistência em ficheiro é apenas para MVP local. Evolução natural:
 - substituir `JsonStore` por repositórios MySQL,
 - separar API/Auth/Payments em serviços independentes,
 - adicionar fila para notificações.
+
+
+## Recursos adicionados
+- Favoritos para vagas/serviços.
+- Centro de notificações in-app para eventos do utilizador.

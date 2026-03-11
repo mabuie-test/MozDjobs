@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'chat_screen.dart';
 import 'job_list_screen.dart';
 import 'service_list_screen.dart';
+import 'notifications_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -32,6 +33,13 @@ class DashboardScreen extends StatelessWidget {
               title: const Text('Chat'),
               subtitle: const Text('Converse sobre entregas e pedidos'),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Notificações'),
+              subtitle: const Text('Acompanhe eventos da sua conta'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
             ),
           ),
         ],

@@ -41,6 +41,15 @@ Base URL: `/api`
 - `GET /reviews/summary?reviewed_id={id}`
 - `POST /reviews` (auth)
 
+## Favorites
+- `GET /favorites?user_id={id}` (auth)
+- `POST /favorites` (auth) `{user_id,entity_type,entity_id}`
+
+## Notifications
+- `GET /notifications?user_id={id}` (auth)
+- `POST /notifications` (auth) `{user_id,title,body}`
+- `POST /notifications/read` (auth) `{notification_id}`
+
 ## Admin Panel API
 - `GET /admin/metrics` (auth role: admin)
 - `POST /admin/users/ban` (auth role: admin)
