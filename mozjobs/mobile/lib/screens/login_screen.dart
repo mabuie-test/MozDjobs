@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +11,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _auth = AuthService();
+  String _feedback = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(controller: _email, decoration: const InputDecoration(labelText: 'Email')),
                 TextField(controller: _password, decoration: const InputDecoration(labelText: 'Senha'), obscureText: true),
                 const SizedBox(height: 12),
-                FilledButton(onPressed: () => Navigator.pushReplacementNamed(context, '/dashboard'), child: const Text('Entrar')),
+                FilledButton(
+                  onPressed: () async {
+                    final ok = await _auth.login(_email.text, _password.text);
+                    if (!mounted) return;
+                    if (ok) {
+                      Navigator.pushReplacementNamed(context, '/dashboard');
+                    } else {
+                      setState(() => _feedback = 'Credenciais inválidas');
+                    }
+                  },
+                  child: const Text('Entrar'),
+                ),
+                TextButton(onPressed: () => Navigator.pushNamed(context, '/register'), child: const Text('Criar conta')),
+                if (_feedback.isNotEmpty) Text(_feedback),
               ]),
             ),
           ),

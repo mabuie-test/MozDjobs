@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="/assets.css"/>
 </head>
 <body>
-<header class="header"><div class="wrap"><div class="brand">MozJobs</div><nav class="nav"><a href="/index.php">Home</a><a href="/jobs/index.php">Vagas</a><a href="/services/index.php">Serviços</a><a href="/login.php">Entrar</a></nav></div></header>
+<header class="header"><div class="wrap"><div class="brand">MozJobs ✨</div><nav class="nav"><a href="/index.php">Home</a><a href="/jobs/index.php">Vagas</a><a href="/services/index.php">Serviços</a><a href="/chat.php">Chat</a><a href="/login.php">Entrar</a></nav></div></header>
 <main class="container">
   <section class="hero">
-    <div class="card">
+    <div class="card dark">
       <span class="tag">Empregos + Freelance + Serviços locais</span>
-      <h1>Contrate talento em Moçambique de forma rápida e segura.</h1>
-      <p class="muted">Publique vagas, contrate freelancers, converse no chat interno e faça pagamentos com escrow via M-Pesa, e-Mola e mKesh.</p>
+      <h1>Contrate talento em Moçambique com uma experiência premium e intuitiva.</h1>
+      <p>Publique vagas, contrate freelancers, converse no chat interno e faça pagamentos com escrow via M-Pesa, e-Mola e mKesh.</p>
+      <p><span class="pill">Escrow Seguro</span> <span class="pill">Chat por Pedido</span> <span class="pill">Admin Anti-fraude</span></p>
       <a class="btn" href="/register.php">Criar conta grátis</a>
       <a class="btn secondary" href="/jobs/index.php">Explorar vagas</a>
     </div>
@@ -24,6 +25,11 @@
         <div class="kpi"><strong>2.4K</strong><span class="muted">Projetos/mês</span></div>
         <div class="kpi"><strong>97%</strong><span class="muted">Satisfação</span></div>
       </div>
+      <ul class="list-clean muted">
+        <li>Onboarding rápido para empresas e freelancers.</li>
+        <li>Fluxo completo: contratação → pagamento → entrega.</li>
+        <li>Sistema de disputas com resolução administrativa.</li>
+      </ul>
     </div>
   </section>
 
@@ -36,6 +42,13 @@
       <div><h4>4) Avaliar</h4><p class="muted">Reputação por avaliações reais de trabalho.</p></div>
     </div>
   </section>
+
+  <section class="grid" style="margin-top:20px">
+    <article class="card"><h3>Plano Starter</h3><p class="muted">Para profissionais iniciantes.</p><p><strong>0 MZN/mês</strong></p></article>
+    <article class="card"><h3>Plano Pro</h3><p class="muted">Mais destaque e propostas.</p><p><strong>3.500 MZN/mês</strong></p></article>
+    <article class="card"><h3>Plano Enterprise</h3><p class="muted">Para empresas com alto volume.</p><p><strong>12.000 MZN/mês</strong></p></article>
+  </section>
 </main>
+<footer class="container"><p class="muted">MozJobs • Plataforma de talento de Moçambique para África.</p></footer>
 </body>
 </html>

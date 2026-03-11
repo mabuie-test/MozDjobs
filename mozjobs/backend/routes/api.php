@@ -26,6 +26,7 @@ return [
   'POST /api/payments/release' => ['handler' => ['App\\Controllers\\PaymentController', 'releaseEscrow'], 'auth' => true, 'role' => ['admin']],
 
   'GET /api/reviews' => ['handler' => ['App\\Controllers\\ReviewController', 'index']],
+  'GET /api/reviews/summary' => ['handler' => ['App\\Controllers\\ReviewController', 'summary']],
   'POST /api/reviews' => ['handler' => ['App\\Controllers\\ReviewController', 'store'], 'auth' => true],
 
 

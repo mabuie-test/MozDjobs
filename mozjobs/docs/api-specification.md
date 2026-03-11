@@ -38,6 +38,7 @@ Base URL: `/api`
 
 ## Reviews
 - `GET /reviews`
+- `GET /reviews/summary?reviewed_id={id}`
 - `POST /reviews` (auth)
 
 ## Admin Panel API

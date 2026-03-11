@@ -10,3 +10,4 @@ php backend/tests/order_status.test.php
 php backend/tests/dispute_flow.test.php
 php backend/tests/admin_metrics.test.php
 php backend/tests/migrations_presence.test.php
+php backend/tests/review_summary.test.php

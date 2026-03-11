@@ -1,1 +1,7 @@
-class User { final int id; final String name; User(this.id,this.name); }
+class User {
+  final int id;
+  final String name;
+  final String role;
+
+  User(this.id, this.name, this.role);
+}

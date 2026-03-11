@@ -1,1 +1,7 @@
-class Job { final int id; final String title; Job(this.id,this.title); }
+class Job {
+  final int id;
+  final String title;
+  final String location;
+
+  Job(this.id, this.title, this.location);
+}

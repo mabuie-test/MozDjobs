@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'chat_screen.dart';
+import 'job_list_screen.dart';
+import 'service_list_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -9,10 +12,28 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('MozJobs Dashboard')),
       body: ListView(
         padding: const EdgeInsets.all(16),
-        children: const [
-          Card(child: ListTile(title: Text('Vagas'), subtitle: Text('Explore oportunidades e candidaturas'))),
-          Card(child: ListTile(title: Text('Serviços'), subtitle: Text('Contrate freelancers locais'))),
-          Card(child: ListTile(title: Text('Chat'), subtitle: Text('Converse sobre entregas e pedidos'))),
+        children: [
+          Card(
+            child: ListTile(
+              title: const Text('Vagas'),
+              subtitle: const Text('Explore oportunidades e candidaturas'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const JobListScreen())),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Serviços'),
+              subtitle: const Text('Contrate freelancers locais'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ServiceListScreen())),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Chat'),
+              subtitle: const Text('Converse sobre entregas e pedidos'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
+            ),
+          ),
         ],
       ),
     );

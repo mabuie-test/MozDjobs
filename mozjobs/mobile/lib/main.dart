@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
 
 void main() => runApp(const MozJobsApp());
 
@@ -14,6 +15,7 @@ class MozJobsApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
       routes: {
         '/': (_) => const LoginScreen(),
+        '/register': (_) => const RegisterScreen(),
         '/dashboard': (_) => const DashboardScreen(),
       },
     );
