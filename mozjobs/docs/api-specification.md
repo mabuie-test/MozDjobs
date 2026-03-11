@@ -2,43 +2,45 @@
 Base URL: `/api`
 
 ## Auth
-- `POST /auth/register` {name,email,password,role}
-- `POST /auth/login` {email,password}
-
-## Users
-- `GET /users`
-- `GET /users/{id}`
+- `POST /auth/register` `{name,email,password,role}`
+- `POST /auth/login` `{email,password}`
 
 ## Profiles
-- `GET /profiles/{userId}`
-- `POST /profiles`
+- `GET /profiles` (auth)
+- `POST /profiles` (auth)
 
 ## Jobs
 - `GET /jobs`
-- `POST /jobs`
+- `POST /jobs` (auth role: company/admin)
 
 ## Services
 - `GET /services`
-- `POST /services`
+- `POST /services` (auth role: professional/admin)
 
 ## Orders
-- `POST /orders`
-- `GET /orders/{id}`
+- `GET /orders` (auth)
+- `POST /orders` (auth)
 
-## Payments
-- `POST /payments/escrow`
-- `POST /payments/release`
+## Payments (Escrow)
+- `GET /payments` (auth role: admin)
+- `POST /payments/escrow` (auth) `{order_id,provider,amount}`
+- `POST /payments/release` (auth role: admin) `{payment_id}`
 
 ## Reviews
-- `POST /reviews`
-- `GET /reviews/{professionalId}`
+- `GET /reviews`
+- `POST /reviews` (auth)
 
 ## Chat
-- `GET /chat/{orderId}`
-- `POST /chat/{orderId}`
+- `GET /chat?order_id={id}` (auth)
+- `POST /chat` (auth)
 
-## Admin
-- `GET /admin/metrics`
-- `POST /admin/users/{id}/ban`
-- `POST /admin/jobs/{id}/approve`
-- `POST /admin/services/{id}/approve`
+## Admin Panel API
+- `GET /admin/metrics` (auth role: admin)
+- `POST /admin/users/ban` (auth role: admin)
+- `POST /admin/jobs/approve` (auth role: admin)
+- `POST /admin/services/approve` (auth role: admin)
+
+## Segurança
+- Bearer Token em `Authorization`.
+- Limite por IP em janela de 1 minuto.
+- Controle de permissões por papel.
