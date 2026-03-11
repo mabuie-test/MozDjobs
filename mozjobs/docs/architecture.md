@@ -14,7 +14,8 @@
 4. Chat: mensagens vinculadas ao `order_id`.
 5. Disputas: cliente/profissional abre disputa e admin resolve.
 6. Favoritos e notificações: personalização e retenção de utilizador.
-7. Admin: métricas, moderação (ban/approve) e governança de disputas.
+7. Feed social: publicações, reações e comentários em timeline.
+8. Admin: métricas, moderação (ban/approve) e governança de disputas.
 
 ## Interface intuitiva
 - Navegação direta por tarefa (Vagas, Serviços, Chat, Hub, Admin, Perfil).

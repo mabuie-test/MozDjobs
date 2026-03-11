@@ -36,6 +36,12 @@ return [
   'POST /api/chat' => ['handler' => ['App\\Controllers\\ChatController', 'store'], 'auth' => true],
 
 
+
+  'GET /api/feed' => ['handler' => ['App\Controllers\FeedController', 'index'], 'auth' => true],
+  'POST /api/feed/posts' => ['handler' => ['App\Controllers\FeedController', 'createPost'], 'auth' => true],
+  'POST /api/feed/reactions' => ['handler' => ['App\Controllers\FeedController', 'react'], 'auth' => true],
+  'POST /api/feed/comments' => ['handler' => ['App\Controllers\FeedController', 'comment'], 'auth' => true],
+
   'GET /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'index'], 'auth' => true],
   'POST /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'store'], 'auth' => true],
 

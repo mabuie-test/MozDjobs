@@ -15,3 +15,4 @@ php backend/tests/favorites_notifications.test.php
 php backend/tests/models_shape.test.php
 php backend/tests/reports.test.php
 php backend/tests/services_delivery.test.php
+php backend/tests/feed_flow.test.php

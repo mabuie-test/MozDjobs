@@ -26,6 +26,7 @@ Páginas com fluxo simples para uso imediato:
 - Admin: métricas, aprovação, banimento e resolução de disputas.
 - Perfil: edição de dados profissionais.
 - Hub: favoritos e notificações para gestão pessoal.
+- Feed estilo social (próximo ao Facebook): publicações, reações e comentários.
 - Favoritos e notificações: novas APIs e feed pessoal no Hub.
 - Reputação: resumo de avaliação média por profissional.
 - Relatórios: insights e export CSV para gestão.

@@ -41,6 +41,12 @@ Base URL: `/api`
 - `GET /reviews/summary?reviewed_id={id}`
 - `POST /reviews` (auth)
 
+## Feed
+- `GET /feed` (auth)
+- `POST /feed/posts` (auth) `{author_id,author_name,content,media_url?}`
+- `POST /feed/reactions` (auth) `{post_id,user_id,type}`
+- `POST /feed/comments` (auth) `{post_id,user_id,comment}`
+
 ## Favorites
 - `GET /favorites?user_id={id}` (auth)
 - `POST /favorites` (auth) `{user_id,entity_type,entity_id}`
