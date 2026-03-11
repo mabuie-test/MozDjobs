@@ -3,6 +3,7 @@ import 'chat_screen.dart';
 import 'job_list_screen.dart';
 import 'service_list_screen.dart';
 import 'notifications_screen.dart';
+import 'reports_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -40,6 +41,13 @@ class DashboardScreen extends StatelessWidget {
               title: const Text('Notificações'),
               subtitle: const Text('Acompanhe eventos da sua conta'),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              title: const Text('Relatórios'),
+              subtitle: const Text('KPIs de performance da plataforma'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ReportsScreen())),
             ),
           ),
         ],

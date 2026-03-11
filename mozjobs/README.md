@@ -28,6 +28,7 @@ Páginas com fluxo simples para uso imediato:
 - Hub: favoritos e notificações para gestão pessoal.
 - Favoritos e notificações: novas APIs e feed pessoal no Hub.
 - Reputação: resumo de avaliação média por profissional.
+- Relatórios: insights e export CSV para gestão.
 
 ## Scripts
 ```bash

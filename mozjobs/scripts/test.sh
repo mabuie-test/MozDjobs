@@ -13,3 +13,5 @@ php backend/tests/migrations_presence.test.php
 php backend/tests/review_summary.test.php
 php backend/tests/favorites_notifications.test.php
 php backend/tests/models_shape.test.php
+php backend/tests/reports.test.php
+php backend/tests/services_delivery.test.php

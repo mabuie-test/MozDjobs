@@ -27,3 +27,8 @@ A persistência em ficheiro é apenas para MVP local. Evolução natural:
 - separar API/Auth/Payments em serviços independentes,
 - adicionar fila para notificações,
 - publicar eventos para analytics em pipeline dedicado.
+
+
+## Relatórios e BI
+- Endpoint de overview para KPIs operacionais e projeção de take rate.
+- Exportação CSV para integração manual com ferramentas externas.

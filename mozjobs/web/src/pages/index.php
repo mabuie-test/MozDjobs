@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets.css"/>
 </head>
 <body>
-<header class="header"><div class="wrap"><div class="brand">MozJobs ✨</div><nav class="nav"><a href="/index.php">Home</a><a href="/jobs/index.php">Vagas</a><a href="/services/index.php">Serviços</a><a href="/chat.php">Chat</a><a href="/hub.php">Hub</a><a href="/login.php">Entrar</a></nav></div></header>
+<header class="header"><div class="wrap"><div class="brand">MozJobs ✨</div><nav class="nav"><a href="/index.php">Home</a><a href="/jobs/index.php">Vagas</a><a href="/services/index.php">Serviços</a><a href="/chat.php">Chat</a><a href="/hub.php">Hub</a><a href="/reports.php">Relatórios</a><a href="/login.php">Entrar</a></nav></div></header>
 <main class="container">
   <section class="hero">
     <div class="card dark">

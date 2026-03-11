@@ -43,6 +43,10 @@ return [
   'POST /api/notifications' => ['handler' => ['App\Controllers\NotificationController', 'store'], 'auth' => true],
   'POST /api/notifications/read' => ['handler' => ['App\Controllers\NotificationController', 'markRead'], 'auth' => true],
 
+
+  'GET /api/reports/overview' => ['handler' => ['App\Controllers\ReportController', 'overview'], 'auth' => true, 'role' => ['admin']],
+  'GET /api/reports/export-csv' => ['handler' => ['App\Controllers\ReportController', 'exportCsv'], 'auth' => true, 'role' => ['admin']],
+
   'GET /api/admin/metrics' => ['handler' => ['App\\Controllers\\AdminController', 'metrics'], 'auth' => true, 'role' => ['admin']],
   'POST /api/admin/users/ban' => ['handler' => ['App\\Controllers\\AdminController', 'banUser'], 'auth' => true, 'role' => ['admin']],
   'POST /api/admin/jobs/approve' => ['handler' => ['App\\Controllers\\AdminController', 'approveJob'], 'auth' => true, 'role' => ['admin']],

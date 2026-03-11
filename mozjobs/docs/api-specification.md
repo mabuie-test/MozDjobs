@@ -50,6 +50,10 @@ Base URL: `/api`
 - `POST /notifications` (auth) `{user_id,title,body}`
 - `POST /notifications/read` (auth) `{notification_id}`
 
+## Reports
+- `GET /reports/overview` (auth role: admin)
+- `GET /reports/export-csv` (auth role: admin)
+
 ## Admin Panel API
 - `GET /admin/metrics` (auth role: admin)
 - `POST /admin/users/ban` (auth role: admin)
