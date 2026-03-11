@@ -26,6 +26,7 @@ Páginas com fluxo simples para uso imediato:
 - Admin: métricas, aprovação, banimento e resolução de disputas.
 - Perfil: edição de dados profissionais.
 - Hub: favoritos e notificações para gestão pessoal.
+- Favoritos e notificações: novas APIs e feed pessoal no Hub.
 - Reputação: resumo de avaliação média por profissional.
 
 ## Scripts
@@ -34,6 +35,8 @@ Páginas com fluxo simples para uso imediato:
 ./scripts/lint.sh
 ./scripts/test.sh
 ```
+
+O runner executa testes de fluxos, migrations, favoritos/notificações e shapes de models.
 
 ## Migrations
 Arquivos SQL em `database/migrations`.
