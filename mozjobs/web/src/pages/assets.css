@@ -63,3 +63,11 @@ footer.container{padding-bottom:32px}
 .stories-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .story-card{color:#fff;border-radius:14px;padding:12px;min-height:110px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 18px rgba(2,6,23,.25)}
 .story-card p{font-size:.9rem;margin:8px 0 0}
+
+
+.kpi-mini{display:flex;align-items:baseline;gap:8px;background:#f8fbff;border:1px solid #dbeafe;padding:10px 12px;border-radius:12px;margin-top:10px}
+.kpi-mini strong{font-size:1.2rem;color:#1d4ed8}
+.comment-form{display:grid;grid-template-columns:110px 1fr auto;gap:8px;margin-top:8px}
+.comment-form input{margin-top:0}
+#followSuggestions li{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#followSuggestions .btn{padding:6px 10px;border-radius:10px}

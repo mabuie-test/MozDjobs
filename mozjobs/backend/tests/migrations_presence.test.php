@@ -10,6 +10,11 @@ $required = [
   __DIR__.'/../../database/migrations/create_chats.sql',
   __DIR__.'/../../database/migrations/create_applications.sql',
   __DIR__.'/../../database/migrations/create_disputes.sql',
+  __DIR__.'/../../database/migrations/create_feed_posts.sql',
+  __DIR__.'/../../database/migrations/create_feed_reactions.sql',
+  __DIR__.'/../../database/migrations/create_feed_comments.sql',
+  __DIR__.'/../../database/migrations/create_stories.sql',
+  __DIR__.'/../../database/migrations/create_follows.sql',
 ];
 foreach ($required as $file) {
   if (!file_exists($file)) {

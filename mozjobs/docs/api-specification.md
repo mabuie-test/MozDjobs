@@ -42,10 +42,15 @@ Base URL: `/api`
 - `POST /reviews` (auth)
 
 ## Feed
-- `GET /feed` (auth)
-- `POST /feed/posts` (auth) `{author_id,author_name,content,media_url?}`
-- `POST /feed/reactions` (auth) `{post_id,user_id,type}`
+- `GET /feed?user_id=&sort=recent|popular&offset=&limit=` (auth)
+- `POST /feed/posts` (auth) `{author_id,author_name,content,media_url?,post_type?}`
+- `POST /feed/posts/update` (auth) `{id,content,post_type?,media_url?}`
+- `POST /feed/posts/delete` (auth) `{id}`
+- `POST /feed/reactions` (auth) `{post_id,user_id,type}` (upsert por utilizador/post)
+- `POST /feed/reactions/remove` (auth) `{post_id,user_id}`
 - `POST /feed/comments` (auth) `{post_id,user_id,comment}`
+- `POST /feed/comments/update` (auth) `{id,comment}`
+- `POST /feed/comments/delete` (auth) `{id}`
 
 ## Stories & Social Graph
 - `GET /stories` (auth)

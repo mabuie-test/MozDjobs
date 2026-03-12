@@ -25,7 +25,7 @@ Páginas com fluxo simples para uso imediato:
 - Chat: mensagens por pedido em tempo real por polling.
 - Admin: métricas, aprovação, banimento e resolução de disputas.
 - Perfil: edição de dados profissionais.
-- Hub: favoritos e notificações para gestão pessoal.
+- Hub: feed social com layout de três colunas, stories, sugestões de perfis e composição inline de comentários.
 - Feed estilo social (próximo ao Facebook): publicações, reações e comentários.
 - Stories e seguir perfis (social graph) para discovery de talento.
 - Favoritos e notificações: novas APIs e feed pessoal no Hub.
@@ -39,7 +39,7 @@ Páginas com fluxo simples para uso imediato:
 ./scripts/test.sh
 ```
 
-O runner executa testes de fluxos, migrations, favoritos/notificações e shapes de models.
+O runner executa testes de fluxos, migrations, favoritos/notificações, social graph, feed avançado (paginação/upsert de reação) e shapes de models.
 
 ## Migrations
 Arquivos SQL em `database/migrations`.

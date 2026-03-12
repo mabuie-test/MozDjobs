@@ -18,6 +18,8 @@
       <li>💼 Vagas seguidas</li>
       <li>⭐ Serviços guardados</li>
     </ul>
+    <div class="kpi-mini"><strong id="totalPosts">0</strong><span>Posts no feed</span></div>
+    <div class="kpi-mini"><strong id="totalFollows">0</strong><span>Ligações sociais</span></div>
     <h4 style="margin-top:14px">Sugestões</h4>
     <form id="followForm" class="form-grid">
       <input name="follower_id" value="1" placeholder="Seu ID"/>
@@ -50,7 +52,7 @@
           <input name="author_name" placeholder="Nome" value="Utilizador MozJobs"/>
         </div>
         <div class="two">
-          <select name="post_type"><option value="status">Status</option><option value="job">Vaga</option><option value="service">Serviço</option></select>
+          <select name="post_type"><option value="status">Status</option><option value="job">Vaga</option><option value="service">Serviço</option><option value="update">Atualização</option></select>
           <input name="media_url" placeholder="URL de imagem (opcional)"/>
         </div>
         <textarea name="content" placeholder="Partilhe atualização, dica de carreira ou oportunidade..."></textarea>
@@ -64,6 +66,8 @@
   <aside class="card feed-right">
     <h3>Tendências</h3>
     <p class="muted">#Programacao #Design #Freelance #RemoteWork #Mozjobs</p>
+    <h4>Pessoas para seguir</h4>
+    <ul id="followSuggestions" class="list-clean muted"></ul>
     <h4>Notificações rápidas</h4>
     <form id="notifForm" class="form-grid">
       <input name="user_id" placeholder="ID user" value="1"/>
@@ -76,17 +80,34 @@
 
 <script src="/app.js"></script>
 <script>
+const state = { commentsOpen: {} };
+
 async function loadStories(){
   const data = await api('/stories',{headers:{...authHeaders()}});
   const items = data.items || [];
   document.getElementById('stories').innerHTML = items.map(s=>`<article class="story-card" style="background:${s.bg || '#1d4ed8'}"><strong>${s.user_name || 'User'}</strong><p>${s.text || ''}</p></article>`).join('') || '<p class="muted">Sem stories.</p>';
 }
 
+function commentComposer(postId){
+  return `
+    <form class="comment-form" onsubmit="event.preventDefault();submitInlineComment(${postId}, this)">
+      <input name="user_id" value="1" placeholder="Seu ID" required />
+      <input name="comment" placeholder="Escreva um comentário..." required />
+      <button class="btn secondary">Enviar</button>
+    </form>
+  `;
+}
+
 async function loadPosts(){
-  const data = await api('/feed',{headers:{...authHeaders()}});
+  const data = await api('/feed?limit=15&sort=recent',{headers:{...authHeaders()}});
   const items = data.items || [];
+  document.getElementById('totalPosts').textContent = data.meta?.total ?? items.length;
+
   document.getElementById('feedPosts').innerHTML = items.map(post => {
     const badge = post.post_type ? `<span class="pill">${post.post_type}</span>` : '';
+    const commentsHtml = (post.comments||[]).map(c=>`<p class='muted'>• ${c.comment}</p>`).join('');
+    const showComposer = state.commentsOpen[post.id] ? commentComposer(post.id) : '';
+
     return `
       <article class="card post-card">
         <div class="post-header">
@@ -98,27 +119,48 @@ async function loadPosts(){
         <div class="post-actions">
           <button class="btn secondary" onclick="reactPost(${post.id}, 'like')">👍 Like (${post.reactions_count || 0})</button>
           <button class="btn secondary" onclick="reactPost(${post.id}, 'love')">❤️ Love</button>
-          <button class="btn secondary" onclick="commentPost(${post.id})">💬 Comentário (${post.comments_count || 0})</button>
+          <button class="btn secondary" onclick="toggleCommentComposer(${post.id})">💬 Comentário (${post.comments_count || 0})</button>
+          <button class="btn secondary" onclick="removeMyReaction(${post.id})">↩️ Remover reação</button>
         </div>
-        <div class="post-comments">${(post.comments||[]).map(c=>`<p class='muted'>• ${c.comment}</p>`).join('') || ''}</div>
+        <div class="post-comments">${commentsHtml || ''}${showComposer}</div>
       </article>
     `;
   }).join('') || '<article class="card">Sem publicações ainda.</article>';
 }
 
-async function reactPost(postId, type){
-  const userId = prompt('Seu ID para reação', '1');
-  if(!userId) return;
-  await api('/feed/reactions',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({post_id:+postId,user_id:+userId,type})});
+function toggleCommentComposer(postId){
+  state.commentsOpen[postId] = !state.commentsOpen[postId];
   loadPosts();
 }
 
-async function commentPost(postId){
-  const userId = prompt('Seu ID', '1');
-  const comment = prompt('Comentário');
-  if(!userId || !comment) return;
-  await api('/feed/comments',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({post_id:+postId,user_id:+userId,comment})});
+async function submitInlineComment(postId, form){
+  const payload = Object.fromEntries(new FormData(form).entries());
+  await api('/feed/comments',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({post_id:+postId,user_id:+payload.user_id,comment:payload.comment})});
+  state.commentsOpen[postId] = false;
+  await loadPosts();
+}
+
+async function reactPost(postId, type){
+  await api('/feed/reactions',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({post_id:+postId,user_id:1,type})});
   loadPosts();
+}
+
+async function removeMyReaction(postId){
+  await api('/feed/reactions/remove',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({post_id:+postId,user_id:1})});
+  loadPosts();
+}
+
+async function loadFollowInsights(){
+  const data = await api('/follows',{headers:{...authHeaders()}});
+  const items = data.items || [];
+  document.getElementById('totalFollows').textContent = items.length;
+  const suggestions = [2,3,4,5,6].filter(id => !items.some(f => +f.followed_id === id));
+  document.getElementById('followSuggestions').innerHTML = suggestions.map(id => `<li>Perfil #${id} <button class="btn secondary" onclick="quickFollow(${id})">Seguir</button></li>`).join('') || '<li>Sem sugestões.</li>';
+}
+
+async function quickFollow(id){
+  await api('/follows',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({follower_id:1,followed_id:id})});
+  loadFollowInsights();
 }
 
 document.getElementById('storyForm').addEventListener('submit', async (e)=>{
@@ -149,10 +191,12 @@ document.getElementById('followForm').addEventListener('submit', async (e)=>{
   const payload = Object.fromEntries(new FormData(e.target).entries());
   const data = await api('/follows',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify(payload)});
   alert(data.saved ? 'Agora estás a seguir este perfil!' : (data.error||'Erro'));
+  loadFollowInsights();
 });
 
 loadStories();
 loadPosts();
+loadFollowInsights();
 </script>
 </body>
 </html>

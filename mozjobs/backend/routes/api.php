@@ -47,7 +47,12 @@ return [
   'GET /api/feed' => ['handler' => ['App\Controllers\FeedController', 'index'], 'auth' => true],
   'POST /api/feed/posts' => ['handler' => ['App\Controllers\FeedController', 'createPost'], 'auth' => true],
   'POST /api/feed/reactions' => ['handler' => ['App\Controllers\FeedController', 'react'], 'auth' => true],
+  'POST /api/feed/reactions/remove' => ['handler' => ['App\Controllers\FeedController', 'removeReaction'], 'auth' => true],
   'POST /api/feed/comments' => ['handler' => ['App\Controllers\FeedController', 'comment'], 'auth' => true],
+  'POST /api/feed/comments/update' => ['handler' => ['App\Controllers\FeedController', 'updateComment'], 'auth' => true],
+  'POST /api/feed/comments/delete' => ['handler' => ['App\Controllers\FeedController', 'deleteComment'], 'auth' => true],
+  'POST /api/feed/posts/update' => ['handler' => ['App\Controllers\FeedController', 'updatePost'], 'auth' => true],
+  'POST /api/feed/posts/delete' => ['handler' => ['App\Controllers\FeedController', 'deletePost'], 'auth' => true],
 
   'GET /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'index'], 'auth' => true],
   'POST /api/favorites' => ['handler' => ['App\Controllers\FavoriteController', 'store'], 'auth' => true],
