@@ -214,6 +214,31 @@ class FeedController {
     return ['resource' => 'FeedComment', 'deleted_id' => $id];
   }
 
+
+  public function trending(array $query = []): array {
+    $limit = max(1, min(20, (int)($query['limit'] ?? 8)));
+    $posts = (new JsonStore())->all('feed_posts');
+
+    $tags = [];
+    foreach ($posts as $post) {
+      $content = (string)($post['content'] ?? '');
+      if (preg_match_all('/#([\p{L}\p{N}_-]+)/u', $content, $matches)) {
+        foreach ($matches[1] as $match) {
+          $key = mb_strtolower($match);
+          $tags[$key] = ($tags[$key] ?? 0) + 1;
+        }
+      }
+    }
+
+    arsort($tags);
+    $items = [];
+    foreach (array_slice($tags, 0, $limit, true) as $tag => $count) {
+      $items[] = ['tag' => '#'.$tag, 'mentions' => $count];
+    }
+
+    return ['resource' => 'FeedTrend', 'items' => $items];
+  }
+
   private function engagementScore(int $postId, array $comments, array $reactions): int {
     $commentsCount = count(array_filter($comments, fn($c) => (int)($c['post_id'] ?? 0) === $postId));
     $reactionsCount = count(array_filter($reactions, fn($r) => (int)($r['post_id'] ?? 0) === $postId));

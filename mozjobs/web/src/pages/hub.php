@@ -65,7 +65,7 @@
 
   <aside class="card feed-right">
     <h3>Tendências</h3>
-    <p class="muted">#Programacao #Design #Freelance #RemoteWork #Mozjobs</p>
+    <ul id="trendingTags" class="list-clean muted"><li>A carregar tendências...</li></ul>
     <h4>Pessoas para seguir</h4>
     <ul id="followSuggestions" class="list-clean muted"></ul>
     <h4>Notificações rápidas</h4>
@@ -151,16 +151,31 @@ async function removeMyReaction(postId){
 }
 
 async function loadFollowInsights(){
-  const data = await api('/follows',{headers:{...authHeaders()}});
+  const data = await api('/follows?follower_id=1',{headers:{...authHeaders()}});
   const items = data.items || [];
   document.getElementById('totalFollows').textContent = items.length;
-  const suggestions = [2,3,4,5,6].filter(id => !items.some(f => +f.followed_id === id));
-  document.getElementById('followSuggestions').innerHTML = suggestions.map(id => `<li>Perfil #${id} <button class="btn secondary" onclick="quickFollow(${id})">Seguir</button></li>`).join('') || '<li>Sem sugestões.</li>';
+
+  const suggestionsData = await api('/follows/suggestions?follower_id=1',{headers:{...authHeaders()}});
+  const suggestions = suggestionsData.items || [];
+  document.getElementById('followSuggestions').innerHTML = suggestions.map(u => `<li>${u.name || ('Perfil #'+u.id)} <span><button class="btn secondary" onclick="quickFollow(${u.id})">Seguir</button> <button class="btn secondary" onclick="quickUnfollow(${u.id})">Deixar</button></span></li>`).join('') || '<li>Sem sugestões.</li>';
 }
 
 async function quickFollow(id){
   await api('/follows',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({follower_id:1,followed_id:id})});
   loadFollowInsights();
+loadTrending();
+}
+
+async function quickUnfollow(id){
+  await api('/follows/unfollow',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify({follower_id:1,followed_id:id})});
+  loadFollowInsights();
+loadTrending();
+}
+
+async function loadTrending(){
+  const data = await api('/feed/trending?limit=6',{headers:{...authHeaders()}});
+  const items = data.items || [];
+  document.getElementById('trendingTags').innerHTML = items.map(t => `<li>${t.tag} <small>(${t.mentions})</small></li>`).join('') || '<li>Sem tendências ainda.</li>';
 }
 
 document.getElementById('storyForm').addEventListener('submit', async (e)=>{
@@ -192,11 +207,13 @@ document.getElementById('followForm').addEventListener('submit', async (e)=>{
   const data = await api('/follows',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify(payload)});
   alert(data.saved ? 'Agora estás a seguir este perfil!' : (data.error||'Erro'));
   loadFollowInsights();
+loadTrending();
 });
 
 loadStories();
 loadPosts();
 loadFollowInsights();
+loadTrending();
 </script>
 </body>
 </html>

@@ -43,6 +43,7 @@ Base URL: `/api`
 
 ## Feed
 - `GET /feed?user_id=&sort=recent|popular&offset=&limit=` (auth)
+- `GET /feed/trending?limit=` (auth)
 - `POST /feed/posts` (auth) `{author_id,author_name,content,media_url?,post_type?}`
 - `POST /feed/posts/update` (auth) `{id,content,post_type?,media_url?}`
 - `POST /feed/posts/delete` (auth) `{id}`
@@ -57,6 +58,8 @@ Base URL: `/api`
 - `POST /stories` (auth) `{user_id,user_name,text,bg?}`
 - `GET /follows?follower_id={id}` (auth)
 - `POST /follows` (auth) `{follower_id,followed_id}`
+- `POST /follows/unfollow` (auth) `{follower_id,followed_id}`
+- `GET /follows/suggestions?follower_id={id}` (auth)
 
 ## Favorites
 - `GET /favorites?user_id={id}` (auth)

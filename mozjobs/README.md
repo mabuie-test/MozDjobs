@@ -19,7 +19,7 @@ docker compose up --build
 Páginas com fluxo simples para uso imediato:
 - Home: proposta de valor e navegação direta.
 - Login/Registo: autenticação rápida.
-- Dashboard: atalhos para vagas, serviços, chat e admin.
+- Dashboard: atalhos para vagas, serviços, feed social, chat e admin.
 - Vagas: busca + candidatura.
 - Serviços: busca + contratação com escrow.
 - Chat: mensagens por pedido em tempo real por polling.
@@ -27,7 +27,7 @@ Páginas com fluxo simples para uso imediato:
 - Perfil: edição de dados profissionais.
 - Hub: feed social com layout de três colunas, stories, sugestões de perfis e composição inline de comentários.
 - Feed estilo social (próximo ao Facebook): publicações, reações e comentários.
-- Stories e seguir perfis (social graph) para discovery de talento.
+- Stories e seguir perfis (social graph) para discovery de talento, com sugestões e unfollow.
 - Favoritos e notificações: novas APIs e feed pessoal no Hub.
 - Reputação: resumo de avaliação média por profissional.
 - Relatórios: insights e export CSV para gestão.

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'chat_screen.dart';
 import 'job_list_screen.dart';
 import 'service_list_screen.dart';
+import 'feed_screen.dart';
 import 'notifications_screen.dart';
 import 'reports_screen.dart';
 
@@ -27,6 +28,14 @@ class DashboardScreen extends StatelessWidget {
               title: const Text('Serviços'),
               subtitle: const Text('Contrate freelancers locais'),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ServiceListScreen())),
+            ),
+          ),
+
+          Card(
+            child: ListTile(
+              title: const Text('Feed Social'),
+              subtitle: const Text('Stories, posts e interações da comunidade'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FeedScreen())),
             ),
           ),
           Card(

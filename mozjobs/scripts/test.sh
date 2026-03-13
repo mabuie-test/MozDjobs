@@ -18,3 +18,4 @@ php backend/tests/services_delivery.test.php
 php backend/tests/feed_flow.test.php
 php backend/tests/social_graph.test.php
 php backend/tests/feed_advanced.test.php
+php backend/tests/social_enhanced.test.php

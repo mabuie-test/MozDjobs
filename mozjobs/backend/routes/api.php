@@ -43,8 +43,11 @@ return [
 
   'GET /api/follows' => ['handler' => ['App\Controllers\FollowController', 'index'], 'auth' => true],
   'POST /api/follows' => ['handler' => ['App\Controllers\FollowController', 'store'], 'auth' => true],
+  'POST /api/follows/unfollow' => ['handler' => ['App\Controllers\FollowController', 'unfollow'], 'auth' => true],
+  'GET /api/follows/suggestions' => ['handler' => ['App\Controllers\FollowController', 'suggestions'], 'auth' => true],
 
   'GET /api/feed' => ['handler' => ['App\Controllers\FeedController', 'index'], 'auth' => true],
+  'GET /api/feed/trending' => ['handler' => ['App\Controllers\FeedController', 'trending'], 'auth' => true],
   'POST /api/feed/posts' => ['handler' => ['App\Controllers\FeedController', 'createPost'], 'auth' => true],
   'POST /api/feed/reactions' => ['handler' => ['App\Controllers\FeedController', 'react'], 'auth' => true],
   'POST /api/feed/reactions/remove' => ['handler' => ['App\Controllers\FeedController', 'removeReaction'], 'auth' => true],
