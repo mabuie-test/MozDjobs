@@ -1,0 +1,14 @@
+{
+  "kpis": [
+    "gmv",
+    "take_rate",
+    "active_users",
+    "paid_jobs",
+    "escrow_volume",
+    "average_rating",
+    "open_disputes"
+  ],
+  "monthly_target_mzn": 3000000,
+  "north_star_metric": "monthly_escrow_volume",
+  "segments": ["professionals", "companies", "clients"]
+}
