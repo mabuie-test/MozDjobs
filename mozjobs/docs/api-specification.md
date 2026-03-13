@@ -19,14 +19,14 @@ Base URL: `/api`
 - `POST /services` (auth role: professional/admin)
 
 ## Orders
-- `GET /orders` (auth)
+- `GET /orders?client_id=&professional_id=&status=` (auth)
 - `POST /orders` (auth)
 - `POST /orders/status` (auth)
 
 ## Payments (Escrow)
-- `GET /payments` (auth role: admin)
-- `POST /payments/escrow` (auth) `{order_id,provider,amount}`
-- `POST /payments/release` (auth role: admin) `{payment_id}`
+- `GET /payments?order_id=` (auth role: admin)
+- `POST /payments/escrow` (auth) `{order_id,provider,amount}` (bloqueia escrow duplicado em held)
+- `POST /payments/release` (auth role: admin) `{payment_id}` (bloqueia release repetido)
 
 ## Chat
 - `GET /chat?order_id={id}` (auth)
@@ -66,7 +66,7 @@ Base URL: `/api`
 - `POST /favorites` (auth) `{user_id,entity_type,entity_id}`
 
 ## Notifications
-- `GET /notifications?user_id={id}` (auth)
+- `GET /notifications?user_id={id}&unread_only=1` (auth)
 - `POST /notifications` (auth) `{user_id,title,body}`
 - `POST /notifications/read` (auth) `{notification_id}`
 
@@ -90,3 +90,5 @@ Base URL: `/api`
 ## Ownership enforcement
 - Ações de escrita social (posts, comentários, reações e follows) só podem ser executadas pelo próprio utilizador autenticado (`auth_user.id`) ou por `admin`.
 - Tentativas fora destas regras retornam `forbidden`.
+
+- `POST /notifications/read` valida ownership do destinatário (ou admin).
