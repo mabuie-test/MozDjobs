@@ -62,10 +62,10 @@ class FeedController {
     $missing = Validator::requireFields($data, ['author_id', 'author_name', 'content']);
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
 
+    if (!$this->canActAsUser($data, (int)$data['author_id'])) return ['error' => 'forbidden'];
+
     $postType = (string)($data['post_type'] ?? 'status');
-    if (!in_array($postType, $this->allowedPostTypes, true)) {
-      return ['error' => 'invalid post_type'];
-    }
+    if (!in_array($postType, $this->allowedPostTypes, true)) return ['error' => 'invalid post_type'];
 
     $saved = (new JsonStore())->create('feed_posts', [
       'author_id' => (int)$data['author_id'],
@@ -84,12 +84,17 @@ class FeedController {
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
 
     $id = (int)$data['id'];
+    $store = new JsonStore();
+    $post = $store->findBy('feed_posts', 'id', $id);
+    if (!$post) return ['error' => 'post not found'];
+    if (!$this->canActAsUser($data, (int)($post['author_id'] ?? 0))) return ['error' => 'forbidden'];
+
     $content = trim((string)($data['content'] ?? ''));
     $postType = (string)($data['post_type'] ?? 'status');
     if ($content === '') return ['error' => 'content required'];
     if (!in_array($postType, $this->allowedPostTypes, true)) return ['error' => 'invalid post_type'];
 
-    $updated = (new JsonStore())->update('feed_posts', $id, function ($item) use ($content, $postType, $data) {
+    $updated = $store->update('feed_posts', $id, function ($item) use ($content, $postType, $data) {
       $item['content'] = $content;
       $item['post_type'] = $postType;
       $item['media_url'] = (string)($data['media_url'] ?? ($item['media_url'] ?? ''));
@@ -97,7 +102,6 @@ class FeedController {
       return $item;
     });
 
-    if (!$updated) return ['error' => 'post not found'];
     return ['resource' => 'FeedPost', 'saved' => $updated];
   }
 
@@ -107,11 +111,12 @@ class FeedController {
 
     $store = new JsonStore();
     $id = (int)$data['id'];
+    $post = $store->findBy('feed_posts', 'id', $id);
+    if (!$post) return ['error' => 'post not found'];
+    if (!$this->canActAsUser($data, (int)($post['author_id'] ?? 0))) return ['error' => 'forbidden'];
 
     $posts = $store->all('feed_posts');
-    $before = count($posts);
     $posts = array_values(array_filter($posts, fn($p) => (int)($p['id'] ?? 0) !== $id));
-    if ($before === count($posts)) return ['error' => 'post not found'];
 
     $store->saveAll('feed_posts', $posts);
     $store->saveAll('feed_comments', array_values(array_filter($store->all('feed_comments'), fn($c) => (int)($c['post_id'] ?? 0) !== $id)));
@@ -123,11 +128,10 @@ class FeedController {
   public function react(array $data): array {
     $missing = Validator::requireFields($data, ['post_id', 'user_id', 'type']);
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
+    if (!$this->canActAsUser($data, (int)$data['user_id'])) return ['error' => 'forbidden'];
 
     $type = (string)$data['type'];
-    if (!in_array($type, $this->allowedReactions, true)) {
-      return ['error' => 'invalid reaction type'];
-    }
+    if (!in_array($type, $this->allowedReactions, true)) return ['error' => 'invalid reaction type'];
 
     $store = new JsonStore();
     $postId = (int)$data['post_id'];
@@ -156,6 +160,7 @@ class FeedController {
   public function removeReaction(array $data): array {
     $missing = Validator::requireFields($data, ['post_id', 'user_id']);
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
+    if (!$this->canActAsUser($data, (int)$data['user_id'])) return ['error' => 'forbidden'];
 
     $store = new JsonStore();
     $postId = (int)$data['post_id'];
@@ -163,9 +168,7 @@ class FeedController {
     $reactions = $store->all('feed_reactions');
     $filtered = array_values(array_filter($reactions, fn($r) => !((int)($r['post_id'] ?? 0) === $postId && (int)($r['user_id'] ?? 0) === $userId)));
 
-    if (count($filtered) === count($reactions)) {
-      return ['error' => 'reaction not found'];
-    }
+    if (count($filtered) === count($reactions)) return ['error' => 'reaction not found'];
 
     $store->saveAll('feed_reactions', $filtered);
     return ['resource' => 'FeedReaction', 'removed' => true, 'post_id' => $postId, 'user_id' => $userId];
@@ -174,6 +177,7 @@ class FeedController {
   public function comment(array $data): array {
     $missing = Validator::requireFields($data, ['post_id', 'user_id', 'comment']);
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
+    if (!$this->canActAsUser($data, (int)$data['user_id'])) return ['error' => 'forbidden'];
 
     $saved = (new JsonStore())->create('feed_comments', [
       'post_id' => (int)$data['post_id'],
@@ -189,13 +193,17 @@ class FeedController {
     $missing = Validator::requireFields($data, ['id', 'comment']);
     if ($missing) return ['error' => 'missing: '.implode(',', $missing)];
 
-    $updated = (new JsonStore())->update('feed_comments', (int)$data['id'], function ($item) use ($data) {
+    $store = new JsonStore();
+    $existing = $store->findBy('feed_comments', 'id', (int)$data['id']);
+    if (!$existing) return ['error' => 'comment not found'];
+    if (!$this->canActAsUser($data, (int)($existing['user_id'] ?? 0))) return ['error' => 'forbidden'];
+
+    $updated = $store->update('feed_comments', (int)$data['id'], function ($item) use ($data) {
       $item['comment'] = trim((string)$data['comment']);
       $item['updated_at'] = date('c');
       return $item;
     });
 
-    if (!$updated) return ['error' => 'comment not found'];
     return ['resource' => 'FeedComment', 'saved' => $updated];
   }
 
@@ -205,15 +213,16 @@ class FeedController {
 
     $store = new JsonStore();
     $id = (int)$data['id'];
+    $existing = $store->findBy('feed_comments', 'id', $id);
+    if (!$existing) return ['error' => 'comment not found'];
+    if (!$this->canActAsUser($data, (int)($existing['user_id'] ?? 0))) return ['error' => 'forbidden'];
+
     $comments = $store->all('feed_comments');
     $filtered = array_values(array_filter($comments, fn($c) => (int)($c['id'] ?? 0) !== $id));
-
-    if (count($filtered) === count($comments)) return ['error' => 'comment not found'];
-
     $store->saveAll('feed_comments', $filtered);
+
     return ['resource' => 'FeedComment', 'deleted_id' => $id];
   }
-
 
   public function trending(array $query = []): array {
     $limit = max(1, min(20, (int)($query['limit'] ?? 8)));
@@ -243,5 +252,14 @@ class FeedController {
     $commentsCount = count(array_filter($comments, fn($c) => (int)($c['post_id'] ?? 0) === $postId));
     $reactionsCount = count(array_filter($reactions, fn($r) => (int)($r['post_id'] ?? 0) === $postId));
     return ($commentsCount * 2) + $reactionsCount;
+  }
+
+  private function canActAsUser(array $data, int $targetUserId): bool {
+    $authUser = $data['auth_user'] ?? null;
+    if (!$authUser) return true;
+
+    $authId = (int)($authUser['id'] ?? 0);
+    $role = (string)($authUser['role'] ?? '');
+    return $role === 'admin' || $authId === $targetUserId;
   }
 }

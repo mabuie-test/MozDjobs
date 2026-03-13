@@ -21,6 +21,7 @@ class FollowController {
     $followerId = (int)$data['follower_id'];
     $followedId = (int)$data['followed_id'];
     if ($followerId === $followedId) return ['error' => 'cannot follow self'];
+    if (!$this->canActAsUser($data, $followerId)) return ['error' => 'forbidden'];
 
     $store = new JsonStore();
     $items = $store->all('follows');
@@ -44,6 +45,8 @@ class FollowController {
 
     $followerId = (int)$data['follower_id'];
     $followedId = (int)$data['followed_id'];
+    if (!$this->canActAsUser($data, $followerId)) return ['error' => 'forbidden'];
+
     $store = new JsonStore();
     $items = $store->all('follows');
     $filtered = array_values(array_filter($items, fn($f) => !((int)($f['follower_id'] ?? 0) === $followerId && (int)($f['followed_id'] ?? 0) === $followedId)));
@@ -69,5 +72,14 @@ class FollowController {
     }));
 
     return ['resource' => 'FollowSuggestion', 'items' => array_slice($suggestions, 0, 8)];
+  }
+
+  private function canActAsUser(array $data, int $targetUserId): bool {
+    $authUser = $data['auth_user'] ?? null;
+    if (!$authUser) return true;
+
+    $authId = (int)($authUser['id'] ?? 0);
+    $role = (string)($authUser['role'] ?? '');
+    return $role === 'admin' || $authId === $targetUserId;
   }
 }

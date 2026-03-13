@@ -85,3 +85,8 @@ Base URL: `/api`
 - Bearer Token em `Authorization`.
 - Limite por IP em janela de 1 minuto.
 - Controle de permissões por papel.
+
+
+## Ownership enforcement
+- Ações de escrita social (posts, comentários, reações e follows) só podem ser executadas pelo próprio utilizador autenticado (`auth_user.id`) ou por `admin`.
+- Tentativas fora destas regras retornam `forbidden`.
