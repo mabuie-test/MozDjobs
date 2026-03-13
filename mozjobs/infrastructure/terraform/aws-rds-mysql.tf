@@ -1,1 +1,0 @@
-# Placeholder RDS MySQL definition.

@@ -1,1 +1,0 @@
-# JobCard component placeholder
