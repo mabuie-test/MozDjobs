@@ -20,6 +20,9 @@ return [
   'GET /api/orders' => ['handler' => ['App\\Controllers\\OrderController', 'index'], 'auth' => true],
   'POST /api/orders' => ['handler' => ['App\\Controllers\\OrderController', 'store'], 'auth' => true],
   'POST /api/orders/status' => ['handler' => ['App\\Controllers\\OrderController', 'updateStatus'], 'auth' => true],
+  'POST /api/orders/delivery/submit' => ['handler' => ['App\\Controllers\\OrderController', 'submitDelivery'], 'auth' => true],
+  'POST /api/orders/delivery/review' => ['handler' => ['App\\Controllers\\OrderController', 'reviewDelivery'], 'auth' => true],
+  'GET /api/orders/timeline' => ['handler' => ['App\\Controllers\\OrderController', 'timeline'], 'auth' => true],
 
   'GET /api/payments' => ['handler' => ['App\\Controllers\\PaymentController', 'index'], 'auth' => true, 'role' => ['admin']],
   'POST /api/payments/escrow' => ['handler' => ['App\\Controllers\\PaymentController', 'createEscrow'], 'auth' => true],

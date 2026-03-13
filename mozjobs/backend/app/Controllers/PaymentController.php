@@ -24,6 +24,11 @@ class PaymentController {
     $amount = (float)$data['amount'];
     if ($amount <= 0) return ['error' => 'invalid amount'];
 
+    $store = new JsonStore();
+    $orderId = (int)$data['order_id'];
+    $order = $store->findBy('orders', 'id', $orderId);
+    if (!$order) return ['error' => 'order not found'];
+
     $provider = strtolower((string)$data['provider']);
     $result = match ($provider) {
       'mpesa' => (new MpesaService())->charge($amount),
@@ -34,8 +39,6 @@ class PaymentController {
 
     if (($result['status'] ?? 'failed') === 'failed') return ['error' => $result['error'] ?? 'payment failed'];
 
-    $orderId = (int)$data['order_id'];
-    $store = new JsonStore();
     $existingHeld = array_values(array_filter($store->all('payments'), fn($p) => (int)($p['order_id'] ?? 0) === $orderId && (string)($p['escrow_status'] ?? '') === 'held'));
     if ($existingHeld) return ['error' => 'escrow already held for order'];
 
@@ -47,6 +50,12 @@ class PaymentController {
       'escrow_status' => 'held',
       'transaction_ref' => strtoupper($provider).'-'.uniqid(),
     ]);
+
+    $store->update('orders', $orderId, function ($o) {
+      $o['escrow_status'] = 'held';
+      $o['updated_at'] = date('c');
+      return $o;
+    });
 
     return ['resource' => 'Payment', 'saved' => $payment];
   }
@@ -60,8 +69,12 @@ class PaymentController {
     $payment = $store->findBy('payments', 'id', $paymentId);
     if (!$payment) return ['error' => 'payment not found'];
 
-    if ((string)($payment['escrow_status'] ?? '') === 'released') {
-      return ['error' => 'escrow already released'];
+    if ((string)($payment['escrow_status'] ?? '') === 'released') return ['error' => 'escrow already released'];
+
+    $order = $store->findBy('orders', 'id', (int)($payment['order_id'] ?? 0));
+    if (!$order) return ['error' => 'order not found'];
+    if ((string)($order['status'] ?? '') !== 'completed') {
+      return ['error' => 'order must be completed before escrow release'];
     }
 
     $updated = $store->update('payments', $paymentId, function ($p) {
@@ -70,6 +83,25 @@ class PaymentController {
       return $p;
     });
 
+    $store->update('orders', (int)$order['id'], function ($o) {
+      $o['escrow_status'] = 'released';
+      $o['updated_at'] = date('c');
+      return $o;
+    });
+
+    $this->notify((int)($order['professional_id'] ?? 0), 'Escrow libertado', 'O pagamento do pedido #'.(int)$order['id'].' foi libertado.');
+
     return ['resource' => 'Payment', 'saved' => $updated];
+  }
+
+  private function notify(int $userId, string $title, string $body): void {
+    if ($userId <= 0) return;
+    (new JsonStore())->create('notifications', [
+      'user_id' => $userId,
+      'title' => $title,
+      'body' => $body,
+      'read' => false,
+      'priority' => 'high',
+    ]);
   }
 }

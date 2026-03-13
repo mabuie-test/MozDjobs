@@ -18,7 +18,11 @@ class AdminController {
       'payments_total' => count($payments),
       'disputes_open' => count(array_filter($disputes, fn($d) => ($d['status'] ?? '') === 'open')),
       'gmv' => array_sum(array_map(fn($p) => (float) ($p['amount'] ?? 0), $payments)),
-      'completed_orders' => count(array_filter($orders, fn($o) => ($o['status'] ?? '') === 'completed'))
+      'completed_orders' => count(array_filter($orders, fn($o) => ($o['status'] ?? '') === 'completed')),
+      'escrow_held' => count(array_filter($payments, fn($p) => ($p['escrow_status'] ?? '') === 'held')),
+      'escrow_released' => count(array_filter($payments, fn($p) => ($p['escrow_status'] ?? '') === 'released')),
+      'delivery_submitted' => count(array_filter($orders, fn($o) => ($o['delivery_status'] ?? '') === 'submitted')),
+      'delivery_accepted' => count(array_filter($orders, fn($o) => ($o['delivery_status'] ?? '') === 'accepted'))
     ];
   }
 

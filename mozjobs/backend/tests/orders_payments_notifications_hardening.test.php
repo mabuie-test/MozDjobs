@@ -42,6 +42,13 @@ if (($duplicateEscrow['error'] ?? '') !== 'escrow already held for order') {
   exit(1);
 }
 
+$blockedRelease = $paymentController->releaseEscrow(['payment_id' => $escrow['saved']['id']]);
+if (($blockedRelease['error'] ?? '') !== 'order must be completed before escrow release') {
+  echo "release completion guard failed\n";
+  exit(1);
+}
+
+$orderController->updateStatus(['order_id' => $order['saved']['id'], 'status' => 'completed']);
 $released = $paymentController->releaseEscrow(['payment_id' => $escrow['saved']['id']]);
 $releasedAgain = $paymentController->releaseEscrow(['payment_id' => $escrow['saved']['id']]);
 if (($releasedAgain['error'] ?? '') !== 'escrow already released') {

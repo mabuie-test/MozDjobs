@@ -22,11 +22,14 @@ Base URL: `/api`
 - `GET /orders?client_id=&professional_id=&status=` (auth)
 - `POST /orders` (auth)
 - `POST /orders/status` (auth)
+- `POST /orders/delivery/submit` (auth) `{order_id,professional_id,notes}`
+- `POST /orders/delivery/review` (auth) `{order_id,client_id,decision=accept|reject,notes?}`
+- `GET /orders/timeline?order_id=` (auth)
 
 ## Payments (Escrow)
 - `GET /payments?order_id=` (auth role: admin)
 - `POST /payments/escrow` (auth) `{order_id,provider,amount}` (bloqueia escrow duplicado em held)
-- `POST /payments/release` (auth role: admin) `{payment_id}` (bloqueia release repetido)
+- `POST /payments/release` (auth role: admin) `{payment_id}` (requer `order.status=completed` e bloqueia release repetido)
 
 ## Chat
 - `GET /chat?order_id={id}` (auth)
