@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS reviews (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  order_id BIGINT NOT NULL,
+  reviewer_id BIGINT NOT NULL,
+  reviewed_id BIGINT NOT NULL,
+  rating INT NOT NULL,
+  comment TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);

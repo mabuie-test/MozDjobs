@@ -1,0 +1,11 @@
+{
+  "name": "mozjobs/platform",
+  "description": "MozJobs monorepo",
+  "type": "project",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "MozJobs\\": "backend/app/"
+    }
+  }
+}

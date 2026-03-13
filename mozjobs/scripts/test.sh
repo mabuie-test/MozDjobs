@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+php backend/tests/auth.test.php
+php backend/tests/jobs.test.php
+php backend/tests/users.test.php
+php backend/tests/auth_flow.test.php
+php backend/tests/payment.test.php
+php backend/tests/job_apply.test.php
+php backend/tests/order_status.test.php
+php backend/tests/dispute_flow.test.php
+php backend/tests/admin_metrics.test.php
+php backend/tests/migrations_presence.test.php
+php backend/tests/review_summary.test.php
+php backend/tests/favorites_notifications.test.php
+php backend/tests/models_shape.test.php
+php backend/tests/reports.test.php
+php backend/tests/services_delivery.test.php
+php backend/tests/feed_flow.test.php
+php backend/tests/social_graph.test.php
+php backend/tests/feed_advanced.test.php
+php backend/tests/social_enhanced.test.php
+php backend/tests/social_permissions.test.php
+php backend/tests/orders_payments_notifications_hardening.test.php
+php backend/tests/delivery_workflow.test.php
+php backend/tests/crypto_hardening.test.php
