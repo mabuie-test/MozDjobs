@@ -1,1 +1,0 @@
-{ "name": "mozjobs-web", "version": "1.0.0", "scripts": {"lint":"echo lint ok"} }
