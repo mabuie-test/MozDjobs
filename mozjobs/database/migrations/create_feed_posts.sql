@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS feed_posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  author_id INT NOT NULL,
+  author_name VARCHAR(150) NOT NULL,
+  content TEXT NOT NULL,
+  media_url VARCHAR(255) NULL,
+  post_type ENUM('status','job','service','update') NOT NULL DEFAULT 'status',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
