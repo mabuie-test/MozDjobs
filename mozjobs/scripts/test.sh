@@ -23,3 +23,4 @@ php backend/tests/social_permissions.test.php
 php backend/tests/orders_payments_notifications_hardening.test.php
 php backend/tests/delivery_workflow.test.php
 php backend/tests/crypto_hardening.test.php
+php backend/tests/production_readiness.test.php

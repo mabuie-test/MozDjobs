@@ -37,3 +37,6 @@ Serviços:
 - [ ] `./scripts/test.sh`
 - [ ] Backup válido gerado
 - [ ] Healthcheck `/api/health` OK
+- [ ] Readiness `/api/ready` OK (sem `fail`)
+- [ ] Segredos fortes definidos (`JWT_SECRET`, `APP_ENCRYPTION_KEY`)
+- [ ] `APP_ALLOWED_ORIGIN` configurado para o domínio de produção

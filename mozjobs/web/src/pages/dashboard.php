@@ -8,6 +8,7 @@
   <article class="card"><h3>Publicar vaga</h3><p class="muted">Crie uma vaga e receba candidaturas qualificadas.</p><a href="/jobs/index.php" class="btn">Gerir vagas</a></article>
   <article class="card"><h3>Criar serviço</h3><p class="muted">Venda serviços com preço fixo e prazo claro.</p><a href="/services/index.php" class="btn">Gerir serviços</a></article>
   <article class="card"><h3>Chat e pedidos</h3><p class="muted">Acompanhe mensagens, entregas e pendências.</p><a href="/chat.php" class="btn">Abrir chat</a></article>
+  <article class="card"><h3>Workflow operacional</h3><p class="muted">Submissão/revisão de entrega, timeline e libertação de escrow.</p><a href="/orders/workflow.php" class="btn success">Abrir workflow</a></article>
   <article class="card"><h3>Disputas</h3><p class="muted">Abra disputa quando houver conflito de entrega.</p><a href="/services/service-detail.php" class="btn secondary">Acessar fluxo</a></article>
 </section>
 <section class="card" style="margin-top:16px"><h3>Resumo rápido</h3><div id="summary" class="muted">A carregar...</div></section>

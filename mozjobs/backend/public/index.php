@@ -10,8 +10,23 @@ spl_autoload_register(function ($class) {
   }
 });
 
+$allowedOrigin = getenv('APP_ALLOWED_ORIGIN') ?: '*';
 header('Content-Type: application/json');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: no-referrer');
+header("Content-Security-Policy: default-src 'none'; frame-ancestors 'none'; base-uri 'none';");
+header('X-Request-Id: '.bin2hex(random_bytes(8)));
+header('Access-Control-Allow-Origin: '.$allowedOrigin);
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+
 $method = $_SERVER['REQUEST_METHOD'];
+if ($method === 'OPTIONS') {
+  http_response_code(204);
+  exit;
+}
+
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 $key = "$method $uri";
 $routes = array_merge(require __DIR__.'/../routes/web.php', require __DIR__.'/../routes/api.php');

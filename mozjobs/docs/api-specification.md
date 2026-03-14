@@ -1,6 +1,10 @@
 # API Specification
 Base URL: `/api`
 
+## System
+- `GET /health`
+- `GET /ready` (readiness checks: crypto/env/storage)
+
 ## Auth
 - `POST /auth/register` `{name,email,password,role}`
 - `POST /auth/login` `{email,password}`
@@ -89,6 +93,7 @@ Base URL: `/api`
 - Limite por IP em janela de 1 minuto.
 - Controle de permissões por papel.
 - Dados no `JsonStore` são persistidos com cifragem AES-256-GCM (encryption at rest).
+- API envia headers de segurança (CSP restritivo, X-Frame-Options, nosniff) e CORS via `APP_ALLOWED_ORIGIN`.
 
 
 ## Ownership enforcement

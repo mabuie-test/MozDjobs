@@ -1,6 +1,7 @@
 <?php
 return [
-  'GET /api/health' => ['handler' => fn() => ['status' => 'ok']],
+  'GET /api/health' => ['handler' => ['App\Controllers\SystemController', 'health']],
+  'GET /api/ready' => ['handler' => ['App\Controllers\SystemController', 'ready']],
 
   'POST /api/auth/register' => ['handler' => ['App\\Controllers\\AuthController', 'register']],
   'POST /api/auth/login' => ['handler' => ['App\\Controllers\\AuthController', 'login']],
