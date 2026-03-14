@@ -24,7 +24,11 @@
     <form id="reviewDelivery" class="form-grid">
       <input name="order_id" placeholder="Order ID" required/>
       <input name="client_id" placeholder="Client ID" required/>
-      <select name="decision"><option value="accept">Aceitar</option><option value="reject">Rejeitar</option></select>
+      <input type="hidden" name="decision" id="decisionInput" value="accept"/>
+      <div class="decision-segmented">
+        <button type="button" class="is-active" data-decision="accept">Aceitar</button>
+        <button type="button" data-decision="reject">Rejeitar</button>
+      </div>
       <textarea name="notes" placeholder="Notas de revisão"></textarea>
       <button class="btn">Rever</button>
     </form>
@@ -47,19 +51,36 @@
     <pre id="timeline" class="muted" style="white-space:pre-wrap"></pre>
   </section>
 </main>
+<div id="toast" class="toast"></div>
 <script src="/app.js"></script>
 <script>
+function notify(message){
+  const el = document.getElementById('toast');
+  el.textContent = message;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1800);
+}
+
 function bindSubmit(id, path){
   document.getElementById(id).addEventListener('submit', async (e)=>{
     e.preventDefault();
     const payload = Object.fromEntries(new FormData(e.target).entries());
     const data = await api(path, {method:'POST', headers:{'Content-Type':'application/json', ...authHeaders()}, body:JSON.stringify(payload)});
-    alert(data.error || 'Operação executada com sucesso');
+    notify(data.error || 'Operação executada com sucesso');
   });
 }
+
 bindSubmit('submitDelivery', '/orders/delivery/submit');
 bindSubmit('reviewDelivery', '/orders/delivery/review');
 bindSubmit('releaseEscrow', '/payments/release');
+
+document.querySelectorAll('[data-decision]').forEach((btn)=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-decision]').forEach((b)=>b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    document.getElementById('decisionInput').value = btn.dataset.decision;
+  });
+});
 
 document.getElementById('timelineForm').addEventListener('submit', async (e)=>{
   e.preventDefault();

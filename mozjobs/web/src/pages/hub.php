@@ -59,10 +59,14 @@
           <input name="author_id" placeholder="ID autor" value="1"/>
           <input name="author_name" placeholder="Nome" value="Utilizador MozJobs"/>
         </div>
-        <div class="two">
-          <select name="post_type"><option value="status">Status</option><option value="job">Vaga</option><option value="service">Serviço</option><option value="update">Atualização</option></select>
-          <input name="media_url" placeholder="URL de imagem (opcional)"/>
+        <input type="hidden" name="post_type" id="postTypeInput" value="status"/>
+        <div class="chips" role="tablist" aria-label="Tipo de publicação">
+          <button type="button" class="chip is-active" data-type="status">Status</button>
+          <button type="button" class="chip" data-type="job">Vaga</button>
+          <button type="button" class="chip" data-type="service">Serviço</button>
+          <button type="button" class="chip" data-type="update">Atualização</button>
         </div>
+        <input name="media_url" placeholder="URL de imagem (opcional)"/>
         <textarea name="content" placeholder="Partilhe atualização, dica de carreira ou oportunidade..."></textarea>
         <button class="btn">Publicar</button>
       </form>
@@ -133,9 +137,10 @@ function commentComposer(postId){
 
 function renderPosts(items){
   document.getElementById('feedPosts').innerHTML = items.map(post => {
-    const badge = post.post_type ? `<span class="pill">${post.post_type}</span>` : '';
-    const commentsHtml = (post.comments||[]).map(c=>`<p class='muted'>• ${c.comment}</p>`).join('');
+    const badge = `<span class="pill">${(post.post_type || 'status').toUpperCase()}</span>`;
+    const commentsHtml = (post.comments || []).map(c => `<p><strong>${c.user_name || 'Utilizador'}:</strong> ${c.comment || ''}</p>`).join('');
     const showComposer = state.commentsOpen[post.id] ? commentComposer(post.id) : '';
+
     return `<article class="card post-card"><div class="post-header"><div><strong>${post.author_name || 'Utilizador'}</strong><p class="muted">${post.created_at || ''}</p></div><div>${badge}</div></div><p>${post.content || ''}</p>${post.media_url ? `<img src="${post.media_url}" alt="media" class="post-media"/>` : ''}<div class="post-actions"><button class="btn secondary" onclick="reactPost(${post.id}, 'like')">👍 Like (${post.reactions_count || 0})</button><button class="btn secondary" onclick="reactPost(${post.id}, 'love')">❤️ Love</button><button class="btn secondary" onclick="toggleCommentComposer(${post.id})">💬 Comentário (${post.comments_count || 0})</button><button class="btn secondary" onclick="removeMyReaction(${post.id})">↩️ Remover reação</button></div><div class="post-comments">${commentsHtml || ''}${showComposer}</div></article>`;
   }).join('') || '<article class="card">Sem publicações para o filtro atual.</article>';
 }
@@ -204,6 +209,14 @@ async function loadTrending(){
   const items = data.items || [];
   document.getElementById('trendingTags').innerHTML = items.map(t => `<li>${t.tag} <small>(${t.mentions})</small></li>`).join('') || '<li>Sem tendências ainda.</li>';
 }
+
+document.querySelectorAll('.chip[data-type]').forEach((chip)=>{
+  chip.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip[data-type]').forEach(c=>c.classList.remove('is-active'));
+    chip.classList.add('is-active');
+    document.getElementById('postTypeInput').value = chip.dataset.type;
+  });
+});
 
 document.getElementById('feedSearch').addEventListener('input', () => renderPosts(applySearch(state.allPosts)));
 

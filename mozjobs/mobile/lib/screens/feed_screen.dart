@@ -8,8 +8,8 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  final List<Map<String, dynamic>> _stories = const [
-    {'name': 'Ana', 'text': 'Nova vaga de PHP', 'color': Colors.blue},
+  final List<Map<String, dynamic>> _stories = [
+    {'name': 'Ana', 'text': 'Oportunidade remota', 'color': Colors.blue},
     {'name': 'Paulo', 'text': 'Freela em design', 'color': Colors.deepPurple},
     {'name': 'Lina', 'text': 'Dica de carreira', 'color': Colors.teal},
   ];
@@ -18,6 +18,12 @@ class _FeedScreenState extends State<FeedScreen> {
     {'author': 'Ana', 'content': 'Estamos a contratar dev #PHP #Remote', 'likes': 4, 'comments': 2},
     {'author': 'Paulo', 'content': 'Novo serviço de branding disponível #Design', 'likes': 8, 'comments': 1},
   ];
+
+  Future<void> _refresh() async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+    setState(() {});
+  }
 
   void _like(int index) {
     setState(() {
@@ -35,73 +41,85 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Feed Social')),
-      body: ListView(
-        padding: const EdgeInsets.all(12),
-        children: [
-          const Text('Stories', style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 96,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: _stories.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
-              itemBuilder: (_, i) {
-                final s = _stories[i];
-                return Container(
-                  width: 140,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: s['color'] as Color,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView(
+          padding: const EdgeInsets.all(12),
+          children: [
+            const Text('Stories', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 96,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: _stories.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                itemBuilder: (_, i) {
+                  final s = _stories[i];
+                  return Container(
+                    width: 150,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: s['color'] as Color,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(s['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 6),
+                        Text(s['text'] as String, style: const TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text('Timeline', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            ...List.generate(_posts.length, (i) {
+              final post = _posts[i];
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(s['name'] as String, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 6),
-                      Text(s['text'] as String, style: const TextStyle(color: Colors.white)),
+                      Row(
+                        children: [
+                          const CircleAvatar(child: Icon(Icons.person_outline)),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(post['author'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          const Icon(Icons.more_horiz),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(post['content'] as String),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          TextButton.icon(
+                            onPressed: () => _like(i),
+                            icon: const Icon(Icons.thumb_up_alt_outlined),
+                            label: Text('Like (${post['likes']})'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => _comment(i),
+                            icon: const Icon(Icons.comment_outlined),
+                            label: Text('Comentário (${post['comments']})'),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text('Timeline', style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          ...List.generate(_posts.length, (i) {
-            final post = _posts[i];
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(post['author'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 6),
-                    Text(post['content'] as String),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        TextButton.icon(
-                          onPressed: () => _like(i),
-                          icon: const Icon(Icons.thumb_up_alt_outlined),
-                          label: Text('Like (${post['likes']})'),
-                        ),
-                        TextButton.icon(
-                          onPressed: () => _comment(i),
-                          icon: const Icon(Icons.comment_outlined),
-                          label: Text('Comentário (${post['comments']})'),
-                        ),
-                      ],
-                    ),
-                  ],
                 ),
-              ),
-            );
-          }),
-        ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

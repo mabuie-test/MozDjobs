@@ -22,6 +22,14 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 
 $method = $_SERVER['REQUEST_METHOD'];
+
+$maxBodyBytes = (int) (getenv('MAX_BODY_BYTES') ?: 1048576);
+$contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($contentLength > $maxBodyBytes) {
+  http_response_code(413);
+  echo json_encode(['error' => 'payload too large']);
+  exit;
+}
 if ($method === 'OPTIONS') {
   http_response_code(204);
   exit;
